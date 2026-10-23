@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <meta name="theme-color" content="#101b26" />
+    <title>Realms of the Shattered Sky</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <canvas id="game" aria-label="Fantasy adventure game"></canvas>
+    <div id="menu" class="overlay">
+      <header>
+        <a class="wordmark" href="/">✦ SHATTERED SKY</a
+        ><span class="eyebrow">AN ORIGINAL CO-OP ADVENTURE</span
+        ><span class="tag">1–6 PLAYERS · ONLINE</span>
+      </header>
+      <main class="landing">
+        <div class="intro">
+          <div class="eyebrow gold">SIX POWERS. ONE LAST LIGHT.</div>
+          <h1>
+            REALMS OF THE<br /><em>SHATTERED<br />SKY</em>
+          </h1>
+          <p>
+            The stars have fallen. The lanterns are still lit.<br />Gather your
+            friends. Bring back the dawn.
+          </p>
+          <div class="features">
+            <span>⚔ Six hero classes</span><span>✧ Four broken realms</span
+            ><span>☄ One shared adventure</span>
+          </div>
+        </div>
+        <section class="create-card">
+          <div class="card-top">
+            <span class="eyebrow">CHOOSE YOUR AWAKENING</span
+            ><span class="gold">01 / 06</span>
+          </div>
+          <div class="hero-preview">
+            <canvas id="portrait" width="280" height="140"></canvas>
+          </div>
+          <div class="class-row">
+            <button id="prev-class" aria-label="Previous class">‹</button>
+            <div>
+              <h2 id="class-name">Swordmaster</h2>
+              <p id="class-style">Steel, instinct, and an unbroken will.</p>
+            </div>
+            <button id="next-class" aria-label="Next class">›</button>
+          </div>
+          <div id="class-dots"></div>
+          <label for="nickname">YOUR NAME</label>
+          <div class="name-row">
+            <input
+              id="nickname"
+              maxlength="20"
+              placeholder="Wanderer"
+              value=""
+            /><input
+              id="color"
+              type="color"
+              value="#80d6c3"
+              title="Cloak colour"
+              aria-label="Cloak colour"
+            />
+          </div>
+          <div class="settings-row">
+            <label
+              >DIFFICULTY<select id="difficulty">
+                <option>Adventurer</option>
+                <option>Casual</option>
+                <option>Heroic</option>
+              </select></label
+            ><label
+              >ROOM CODE<input
+                id="room"
+                maxlength="8"
+                placeholder="New world"
+                autocomplete="off"
+            /></label>
+          </div>
+          <button id="begin" class="primary">
+            CREATE WORLD <span>→</span>
+          </button>
+          <p id="menu-status" role="status">
+            No account. No installation. Just an adventure.
+          </p>
+        </section>
+      </main>
+      <footer>
+        <span
+          >MOVE · A / D &nbsp;&nbsp; JUMP · SPACE &nbsp;&nbsp; AIM · MOUSE</span
+        ><span
+          >HEADPHONES RECOMMENDED
+          <button id="menu-audio">♫ MUSIC OFF</button></span
+        >
+      </footer>
+    </div>
+    <div id="hud" hidden>
+      <div class="hud-top">
+        <div class="vitals panel">
+          <div><b id="hero-label"></b><span id="rank-label">C</span></div>
+          <div class="bar health">
+            <i id="hp-bar"></i><small id="hp-text"></small>
+          </div>
+          <div class="bar flight"><i id="flight-bar"></i></div>
+          <span id="party-text"></span>
+        </div>
+        <div class="region-title">
+          <small id="act-label"></small>
+          <h2 id="region-name"></h2>
+          <p id="objective"></p>
+        </div>
+        <div class="top-buttons">
+          <button id="share">↗ INVITE</button
+          ><button id="journal-btn">J · JOURNAL</button
+          ><button id="inventory-btn">I · GEAR</button
+          ><button id="audio">♫ OFF</button>
+        </div>
+      </div>
+      <div id="bossbar" class="panel" hidden>
+        <div id="boss-name"></div>
+        <div class="bar boss"><i id="boss-hp"></i></div>
+        <small id="boss-tip"></small>
+      </div>
+      <div id="toast" role="status"></div>
+      <div id="prompt"></div>
+      <div class="hud-bottom">
+        <div class="mini-map panel">
+          <canvas id="map" width="190" height="44"></canvas
+          ><small id="checkpoint-label"></small>
+        </div>
+        <div>
+          <div id="hotbar"></div>
+          <div class="control-hint">
+            A D move · SPACE double jump · W fly · SHIFT dodge · E interact /
+            revive · H hint
+          </div>
+        </div>
+        <div class="panel potion">
+          <b>✦</b><span>Rest at lanterns<br />Hold E to revive</span>
+        </div>
+      </div>
+      <div id="down" hidden></div>
+    </div>
+    <div id="dialogue" class="panel" hidden>
+      <small id="speaker"></small>
+      <p id="dialogue-line"></p>
+      <button id="skip">CONTINUE ↵</button><span id="votes"></span>
+    </div>
+    <div id="inventory" class="modal" hidden>
+      <div class="panel modal-inner">
+        <button class="close" data-close="inventory">✕</button
+        ><small class="eyebrow gold">THE TOOLS OF A HERO</small>
+        <h2>Equipment & forge</h2>
+        <p id="stats"></p>
+        <div id="slots"></div>
+        <h3>Satchel <small id="gold"></small></h3>
+        <div id="items"></div>
+        <h3>Tovin’s travelling forge</h3>
+        <p>
+          Stand near your checkpoint lantern. Purchases equip automatically if
+          stronger.
+        </p>
+        <div id="forge"></div>
+      </div>
+    </div>
+    <div id="journal" class="modal" hidden>
+      <div class="panel modal-inner">
+        <button class="close" data-close="journal">✕</button
+        ><small class="eyebrow gold">A WORLD WORTH SAVING</small>
+        <h2>Quest journal</h2>
+        <div id="quests"></div>
+        <h3>Your abilities</h3>
+        <div id="ability-guide"></div>
+        <h3>Field guide</h3>
+        <div id="bestiary"></div>
+      </div>
+    </div>
+    <div id="ending" class="modal" hidden>
+      <div class="ending-inner">
+        <small class="eyebrow gold">THE CELESTIAL CORE IS WHOLE</small>
+        <h1>The dawn<br /><em>remembers.</em></h1>
+        <div id="ending-lines"></div>
+        <button id="continue-explore" class="primary">
+          RETURN TO THE REALM →
+        </button>
+      </div>
+    </div>
+    <div id="touch" hidden>
+      <div>
+        <button data-key="a">◀</button><button data-key="d">▶</button
+        ><button data-key=" ">↑</button><button data-key="w">✧</button>
+      </div>
+      <div>
+        <button data-key="e">E</button><button data-key="shift">↠</button
+        ><button data-key="attack">⚔</button>
+      </div>
+    </div>
+    <script type="module" src="/game.js"></script>
+  </body>
+</html>

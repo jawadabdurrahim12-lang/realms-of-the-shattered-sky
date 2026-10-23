@@ -1,0 +1,26 @@
+{
+  "name": "realms-of-the-shattered-sky",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --import tsx src/server.ts",
+    "build": "node build.mjs",
+    "start": "node dist/server.js",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
